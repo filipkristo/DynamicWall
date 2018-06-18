@@ -5,6 +5,9 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using System.Threading;
 using BackgroundComponent;
+using Windows.System.UserProfile;
+using Windows.Storage;
+using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -50,14 +53,27 @@ namespace BackgroundTaskDemo
             BackgroundTaskRegistration backtask = task.Register();
             return backtask;
         }
-        public static async void MainAsync()
+
+        // Pass in a relative path to a file inside the local appdata folder 
+        private async Task<bool> SetWallpaperAsync()
         {
-            var t = await Class1.SetWallpaperAsync()
-                { }
-                
+            bool success = false;
+            if (UserProfilePersonalizationSettings.IsSupported())
+
+            {
+                var imageId = DateTime.Now.Hour;
+                var uri = new Uri($"ms-appx:///Dynamic/Dynamic-{imageId}.jpg");
+                var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
+                success = await UserProfilePersonalizationSettings.Current.TrySetWallpaperImageAsync(file);
+                success = await UserProfilePersonalizationSettings.Current.TrySetLockScreenImageAsync(file);
+            }
+            return success;
         }
 
-
-
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            var t = await SetWallpaperAsync();
+        }
     }
 }

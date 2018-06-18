@@ -10,7 +10,7 @@ using Windows.Storage.Streams;
 
 namespace BackgroundComponent
 {
-    public class Class1 : IBackgroundTask
+    public sealed class Class1 : IBackgroundTask
     {
         
         public void Run(IBackgroundTaskInstance taskInstance)
