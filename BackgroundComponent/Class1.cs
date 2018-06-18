@@ -39,7 +39,7 @@ namespace BackgroundComponent
 
             {
                 var imageId = DateTime.Now.Hour;
-                var uri = new Uri($"ms-appx:///Dynamic/Dynamic-{imageId}.jpeg");
+                var uri = new Uri($"ms-appx:///Dynamic/Dynamic-{imageId}.jpg");
                 StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
                 success = await UserProfilePersonalizationSettings.Current.TrySetWallpaperImageAsync(file);
                 success = await UserProfilePersonalizationSettings.Current.TrySetLockScreenImageAsync(file);
